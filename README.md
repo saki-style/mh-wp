@@ -1,2 +1,2 @@
 # mh-wp
-マハーバーラタ（WordPress）
+マハーバーラタ（WordPress化）
