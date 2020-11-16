@@ -14,7 +14,7 @@
 <?php get_template_part( 'template-parts/gnav' ); ?>
 
 <?php if( is_front_page() ): ?>
-        <!---------------------- TOPページ ---------------------->
+        <!------ TOPページ ------>
         <!---- mv (TOP) ---->
         <div class="mv _top wow fadeIn">
             <div class="inner">
@@ -30,7 +30,7 @@
     </header><!---- /header ---->
 
     <!---- main ---->
-    <main class="main"><!---------------------- /TOPページ ---------------------->
+    <main class="main"><!------ /TOPページ ------>
 
 <?php
 elseif( is_page( 'story' )):
@@ -38,7 +38,7 @@ elseif( is_page( 'story' )):
     $post = $story_page;
 setup_postdata( $post );
 ?>
-        <!---------------------- STORYページ ---------------------->
+        <!------ STORYページ ------>
         <!---- mv (STORY) ---->
         <div class="mv _story" <?php echo do_shortcode( '[bg-image id="' . get_field( 'image_main' ) . '"]' ); ?>>
             <div class="inner">
@@ -65,13 +65,13 @@ setup_postdata( $post );
     </header><!---- /header ---->
 
     <!---- main ---->
-    <main class="main"><!---------------------- /STORYページ ---------------------->
+    <main class="main"><!------ /STORYページ ------>
 
 <?php
 wp_reset_postdata();
 else:
 ?>
-        <!---------------------- その他固定ページ ---------------------->
+        <!------ その他固定ページ ------>
         <!---- mv (child page)  ---->
         <div class="mv _child">
             <div class="inner">
@@ -89,6 +89,6 @@ else:
     </header><!---- /header ---->
 
     <!---- main ---->
-    <main class="main"><!---------------------- /その他固定ページ ---------------------->
+    <main class="main"><!------ /その他固定ページ ------>
 
 <?php endif; ?>
