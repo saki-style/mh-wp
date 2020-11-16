@@ -1,10 +1,9 @@
-// jQuery(function(){
+jQuery(function(){
 
-// // drawer
-// $('.drawer').drawer();
-jQuery( function( $ ) {
-    $( '.drawer' ).drawer();
+// drawer
+jQuery('.drawer').drawer();
+
 // wow
 new WOW().init();
-
+    
 });
