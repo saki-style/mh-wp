@@ -4,7 +4,6 @@
         <div class="bg-box">
 <?php $post_obj = get_post_type_object( 'schedule' );?>
             <h1 class="sec-tit wow fadeInUp"><?php echo strtoupper( $post_obj->name ); ?></h1>
-
             <ul class="sched-list">
 <?php
 $sched_posts = get_art_posts( 'schedule', 'area', '',);
