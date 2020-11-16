@@ -2,11 +2,11 @@
 /* セットアップ
 ------------------------------------------------- */
 function my_setup() {
-  add_theme_support( 'post-thumbnails' ); // アイキャッチ
-  add_theme_support( 'automatic-feed-links' ); // 投稿とコメントのRSSフィードのリンクを有効化
-  add_theme_support( 'title-tag' ); // タイトルタグ自動生成
-  add_filter( 'document_title_separator', function(){ return '|'; } ); // タイトルの区切り文字を「|」にする (必要な場合)
-  add_theme_support( 'html5', array( //HTML5でマークアップ
+  add_theme_support( 'post-thumbnails' );
+  add_theme_support( 'automatic-feed-links' );
+  add_theme_support( 'title-tag' );
+  add_filter( 'document_title_separator', function(){ return '|'; } );
+  add_theme_support( 'html5', array(
     'search-form',
     'comment-form',
     'comment-list',
@@ -15,7 +15,6 @@ function my_setup() {
   ));
 }
 add_action( 'after_setup_theme', 'my_setup' );
-
 
 /* css・jsの読み込み
 ------------------------------------------------- */
@@ -32,7 +31,6 @@ function my_script_init() {
 }
 add_action( 'wp_enqueue_scripts', 'my_script_init' );
 
-
 /* メニューの登録
 ------------------------------------------------- */
 function my_menu_init() {
@@ -47,7 +45,6 @@ function prefix_nav_description( $item_output, $item, $depth, $args ) {
   return $item_output;
 }
 add_filter( 'walker_nav_menu_start_el', 'prefix_nav_description', 10, 4 );
-
 
 /* ページタイトルの表示分け
 ------------------------------------------------- */
@@ -69,14 +66,9 @@ elseif ( is_page( 'thanks' ) ):
   $page_id = $page_id->ID;
   return get_field( 'english_title', $page_id );
 endif;
-// スケジュールページ
-// elseif ( is_post_type_archive( 'schedule' ) ):
-//   $post_obj = get_post_type_object( 'schedule' );
-//   return $post_obj -> name;
 }
 
-
-/* 子ページを取得（第二引数を指定→そのページの子ぺーじを取得、デフォルトのnull(指定なし）で閲覧している記事の子ぺーじを取得
+/* 子ページを取得
 ------------------------------------------------- */
 function get_child_pages( $number = -1, $specified_id = null ) {
   if ( isset( $specified_id ) ):
@@ -84,24 +76,20 @@ function get_child_pages( $number = -1, $specified_id = null ) {
   else:
     $parent_id = get_the_ID();
   endif;
-  //メインクエリ（データベースから取得）
   $args = array(
-    'posts_per_page' => $number,//取得したい記事数→全件
-    'post_type' => 'page',//固定ページ
-    'orderby' => 'menu_order',//設定した並び順
-    'order' => 'ASC',//orderbyを元にした並び順→昇順
-    'post_parent' => $parent_id,//表示したい子ぺーじが紐づく親ページの指定
+    'posts_per_page' => $number,
+    'post_type' => 'page',
+    'orderby' => 'menu_order',
+    'order' => 'ASC',
+    'post_parent' => $parent_id
   );
-  //サブクエリ（テンプレート内から取得）
   $child_pages = new WP_Query( $args );
   return $child_pages;
 }
 
-
-/* 特定の記事を抽出（投稿タイプ、表示したいタームが属するタクソノミー（news)のスラッグ、ターム(news記事）のスラッグ、記事数）
+/* 特定の記事を抽出
 ------------------------------------------------- */
 function get_art_posts( $post_type, $taxonomy = null, $term = null, $number = -1 ) {
-//　カスタム投稿タイプ用（タームが未入力の場合、全てのタームを取得する）
   if ( ! $term ):
     $terms_obj = get_terms( 'area' );
     $term = wp_list_pluck( $terms_obj, 'slug' );
@@ -121,7 +109,6 @@ function get_art_posts( $post_type, $taxonomy = null, $term = null, $number = -1
   return $art_posts;
 }
 
-
 /* お問い合わせ完了画面のページ遷移
 ------------------------------------------------- */
 add_action( 'wp_footer', 'add_thanks_page' );
@@ -135,35 +122,28 @@ document.addEventListener( 'wpcf7mailsent', function( event ) {
 EOD;
 }
 
-
 /* 抜粋文の設定
 ------------------------------------------------- */
-// 抜粋機能を固定ページで使用可能にする
 add_post_type_support( 'page', 'excerpt' );
-// 抜粋文の最後につく文字列の変更
 function cms_excerpt_more() {
   return '...';
 }
 add_filter( 'excerpt_more', 'cms_excerpt_more' );
-// 標準の110文字から変更
 function cms_excerpt_length() {
   return 10;
 }
 add_filter( 'excerpt_length', 'cms_excerpt_length');
-/* 文字数を指定する場合 */
 function get_flexible_excerpt( $number ) {
   $value = get_the_excerpt();
   $value = wp_trim_words( $value, $number, '...');
   return $value;
 }
-// get_the_excerpt()で取得する文字列に改行タグを挿入
 function apply_excerpt_br( $value ) {
   return nl2br( $value );
 }
 add_filter( 'get_the_excerpt', 'apply_excerpt_br');
 
-
-/* ボタンショートコード （$atts=引数、$contet=[]ここに入力した文字[]）
+/* ボタンショートコード
 ------------------------------------------------- */
 // オリジナル
 function btn_shortcode( $atts, $content = '' ) {
@@ -179,16 +159,14 @@ function rsv_btn_shortcode() {
   return '<p class="rsv-btn"><a href="' . esc_url( home_url() ) . '">チケット予約サイトへ</a></p>';
 }
 add_shortcode('rsv-btn', 'rsv_btn_shortcode');
-// 問い合わせページへ
+// 問い合わせページへ
 function inq_btn_shortcode() {
   return '<p class="inq-btn"><a href="' . esc_url( home_url( "inquiry" ) ) . '">お問い合わせはこちら</a></p>';
 }
 add_shortcode('inq-btn', 'inq_btn_shortcode');
 
-
 /* 背景画像ショートコード
 ------------------------------------------------- */
-// カスタムフィールドより指定
 function bg_shortcode( $atts ) {
   $atts = shortcode_atts( array(
     'id' => '',
@@ -197,12 +175,11 @@ function bg_shortcode( $atts ) {
 }
 add_shortcode( 'bg-image', 'bg_shortcode');
 
-
 /* 画像設定
 ------------------------------------------------- */
-add_image_size( 'news', 510, 285.6, true );//サイズの名前、横幅、縦幅、切り抜くかどうか（falseはリサイズ）
-add_image_size( 'art', 810, 578, true );//サイズの名前、横幅、縦幅、切り抜くかどうか（falseはリサイズ）
-add_image_size( 'cast', 220, 220, true );//サイズの名前、横幅、縦幅、切り抜くかどうか（falseはリサイズ）
+add_image_size( 'news', 510, 285.6, true );
+add_image_size( 'art', 810, 578, true );
+add_image_size( 'cast', 220, 220, true );
 
 
 ?>
